@@ -1,12 +1,12 @@
 package com.jiang.minimybatis;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Test;
 
-import com.jiang.minimybatis.binding.MapperProxyFactory;
+import com.jiang.minimybatis.binding.MapperRegistry;
 import com.jiang.minimybatis.dao.IUserDao;
+import com.jiang.minimybatis.session.SqlSession;
+import com.jiang.minimybatis.session.SqlSessionFactory;
+import com.jiang.minimybatis.session.defaults.DefaultSqlSessionFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,13 +19,18 @@ public class ApiTest {
 
     @Test
     public void test_MapperProxyFactory() {
-        MapperProxyFactory<IUserDao> factory = new MapperProxyFactory<>(IUserDao.class);
-        Map<String, String> sqlSession = new HashMap<>();
+        // 1. 注册 Mapper
+        MapperRegistry registry = new MapperRegistry();
+        registry.addMappers("com.jiang.minimybatis.dao");
 
-        sqlSession.put("com.jiang.minimybatis.dao.IUserDao.queryUserName", "模拟执行 Mapper.xml 中 SQL 语句的操作：查询用户姓名");
-        sqlSession.put("com.jiang.minimybatis.dao.IUserDao.queryUserAge", "模拟执行 Mapper.xml 中 SQL 语句的操作：查询用户年龄");
-        IUserDao userDao = factory.newInstance(sqlSession);
+        // 2. 从 SqlSession 工厂获取 Session
+        SqlSessionFactory sqlSessionFactory = new DefaultSqlSessionFactory(registry);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
 
+        // 3. 获取映射器对象
+        IUserDao userDao = sqlSession.getMapper(IUserDao.class);
+
+        // 4. 测试验证
         String res = userDao.queryUserName("10001");
         log.debug("测试结果：{}", res);
     }
