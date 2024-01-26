@@ -1,6 +1,6 @@
 package com.jiang.minimybatis.session.defaults;
 
-import com.jiang.minimybatis.binding.MapperRegistry;
+import com.jiang.minimybatis.session.Configuration;
 import com.jiang.minimybatis.session.SqlSession;
 import com.jiang.minimybatis.session.SqlSessionFactory;
 
@@ -10,15 +10,15 @@ import com.jiang.minimybatis.session.SqlSessionFactory;
  */
 public class DefaultSqlSessionFactory implements SqlSessionFactory {
 
-    private final MapperRegistry mapperRegistry;
+    private final Configuration configuration;
 
-    public DefaultSqlSessionFactory(MapperRegistry mapperRegistry) {
-        this.mapperRegistry = mapperRegistry;
+    public DefaultSqlSessionFactory(Configuration configuration) {
+        this.configuration = configuration;
     }
 
     @Override
     public SqlSession openSession() {
-        return new DefaultSqlSession(mapperRegistry);
+        return new DefaultSqlSession(configuration);
     }
 
 }
