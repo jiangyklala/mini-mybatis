@@ -15,6 +15,8 @@ public class User {
 
     private String userId;          // 用户ID
 
+    private String userName;        // 用户名称
+
     private String userHead;        // 头像
 
     private Date createTime;        // 创建时间

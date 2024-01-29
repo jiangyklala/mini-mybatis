@@ -3,9 +3,8 @@
 <mapper namespace="com.jiang.minimybatis.dao.IUserDao">
 
     <select id="queryUserInfoById" parameterType="java.lang.Long" resultType="com.jiang.minimybatis.po.User">
-        SELECT id, userId, userHead, createTime
+        SELECT id, userId, userName, userHead
         FROM user
         where id = #{id}
     </select>
-
 </mapper>
